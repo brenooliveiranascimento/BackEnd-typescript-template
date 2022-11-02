@@ -24,6 +24,22 @@ class BooksController {
     console.log(createBook)
     res.status(statusCodes.OK).json(createBook);
   }
+
+  public update = async (req: Request, res: Response) => {
+    const id = parseInt(req.params.id);
+    const book = req.body;
+
+    const bookExist = await this.bookService.getById(id)
+
+    if (!bookExist) return res.status(statusCodes.NOT_FOUND).json({ message: 'Book dont exist' });
+
+    const updatedBooks = await this.bookService.update(book, id);
+    return res.status(statusCodes.OK).json({
+      message: 'Book updated sufly',
+      updatedBooks
+    })
+    
+  }
 }
 
 export default BooksController;
